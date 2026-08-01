@@ -45,6 +45,9 @@ reference/
 build/
 *.apk
 *.keystore
+*.jks
+gradle.properties
+keystore.properties
 *.tmp
 __pycache__/
 
