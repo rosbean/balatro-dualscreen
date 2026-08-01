@@ -33,9 +33,10 @@ import android.os.SystemClock;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-
 import com.balatro.dualscreen.BalatroActivity;
-
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.List;
 /**
  * The secondary display's content view.
  *
@@ -75,7 +76,7 @@ public class CompanionProbeView extends View {
      * Where each card was drawn. Lua computes these rects when it renders
      * the panel; they are used for hit-testing only.
      */
-    private final java.util.List<Rect> cardRects = new java.util.ArrayList<>();
+    private final List<Rect> cardRects = new ArrayList<>();
 
     // --- frame path -------------------------------------------------------
     // When LOVE is pushing pixels, they take over the whole view and the debug
@@ -112,7 +113,7 @@ public class CompanionProbeView extends View {
     }
 
     private Bitmap frame;
-    private java.nio.ByteBuffer frameBuf;
+    private ByteBuffer frameBuf;
     private long blitTotalNs, blitCount;
     private final Rect frameSrc = new Rect();
     private final Rect frameDst = new Rect();
@@ -147,7 +148,7 @@ public class CompanionProbeView extends View {
      * around its memcpy, which is what makes the handoff tear-free. One copy,
      * no allocation.
      */
-    public void updateFrame(java.nio.ByteBuffer buf, int w, int h) {
+    public void updateFrame(ByteBuffer buf, int w, int h) {
         if (buf == null || w <= 0 || h <= 0) {
             return;
         }
@@ -169,7 +170,7 @@ public class CompanionProbeView extends View {
                 frame.recycle();
             }
             frame = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-            frameBuf = java.nio.ByteBuffer.allocateDirect(w * h * 4);
+            frameBuf = ByteBuffer.allocateDirect(w * h * 4);
             frameSrc.set(0, 0, w, h);
             Log.i(TAG, "frame buffer allocated " + w + "x" + h
                     + " (" + (w * h * 4 / 1024) + " KiB)");
@@ -398,7 +399,6 @@ public class CompanionProbeView extends View {
     }
 
     // --- drawing ----------------------------------------------------------
-
 
     @Override
     protected void onDraw(Canvas c) {

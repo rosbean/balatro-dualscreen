@@ -20,8 +20,8 @@ package com.balatro.dualscreen;
 
 import android.content.Context;
 import android.util.Log;
-
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,7 +34,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
-
 /**
  * Turns the user's own Balatro into this mod's game.love, ON DEVICE.
  *
@@ -270,7 +269,7 @@ public final class GameAssembler {
 
         try (ZipInputStream in = openGameZip(info);
              ZipOutputStream out = new ZipOutputStream(
-                     new java.io.BufferedOutputStream(
+                     new BufferedOutputStream(
                              new FileOutputStream(tmp)))) {
 
             for (ZipEntry e; (e = in.getNextEntry()) != null; ) {

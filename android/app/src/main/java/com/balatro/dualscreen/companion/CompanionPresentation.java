@@ -24,6 +24,7 @@
 
 package com.balatro.dualscreen.companion;
 
+import android.app.Presentation;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -31,13 +32,13 @@ import android.view.Display;
 import android.view.KeyEvent;
 import android.view.Window;
 import android.view.WindowManager;
-
+import java.nio.ByteBuffer;
 /**
  * The window on the secondary display. Deliberately as thin as Banjo's - all
  * it does is own a content view and paint the window background black so that
  * nothing shows through during layout.
  */
-public class CompanionPresentation extends android.app.Presentation {
+public class CompanionPresentation extends Presentation {
 
     private CompanionProbeView view;
 
@@ -136,7 +137,7 @@ public class CompanionPresentation extends android.app.Presentation {
     }
 
     /** Shared-buffer frame. */
-    public void updateFrame(java.nio.ByteBuffer buf, int w, int h) {
+    public void updateFrame(ByteBuffer buf, int w, int h) {
         if (view != null) {
             view.updateFrame(buf, w, h);
         }

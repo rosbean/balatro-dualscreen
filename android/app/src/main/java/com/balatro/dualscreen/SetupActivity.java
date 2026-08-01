@@ -19,11 +19,22 @@
 package com.balatro.dualscreen;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ShortcutInfo;
+import android.content.pm.ShortcutManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.graphics.drawable.Icon;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
 import android.util.Log;
@@ -34,12 +45,10 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
 /**
  * First-launch setup: the release APK contains no Balatro, and this screen is
  * where the user's own copy becomes the game.
@@ -293,28 +302,28 @@ public class SetupActivity extends Activity {
      * hit and solved the same way.
      */
     private void offerShortcutThenLaunch() {
-        if (android.os.Build.VERSION.SDK_INT < 26) {
+        if (Build.VERSION.SDK_INT < 26) {
             launchGame();
             return;
         }
-        final android.content.pm.ShortcutManager sm =
-                getSystemService(android.content.pm.ShortcutManager.class);
+        final ShortcutManager sm =
+                getSystemService(ShortcutManager.class);
         if (sm == null || !sm.isRequestPinShortcutSupported()) {
             launchGame();
             return;
         }
 
-        new android.app.AlertDialog.Builder(this)
+        new AlertDialog.Builder(this)
                 .setTitle("Add to home screen?")
                 .setMessage("Add a Balatro shortcut to your home screen?"
                         + (IconExtractor.extracted(this) != null
                            ? " It will use the game's own icon, taken from"
                              + " your copy."
                            : ""))
-                .setPositiveButton("Add", new android.content.DialogInterface
+                .setPositiveButton("Add", new DialogInterface
                         .OnClickListener() {
                     @Override public void onClick(
-                            android.content.DialogInterface d, int w) {
+                            DialogInterface d, int w) {
                         awaitingPin = true;
                         pinShown = false;
                         status.setText("Confirm the shortcut, then Balatro"
@@ -332,10 +341,10 @@ public class SetupActivity extends Activity {
                         }, 20000);
                     }
                 })
-                .setNegativeButton("Not now", new android.content.DialogInterface
+                .setNegativeButton("Not now", new DialogInterface
                         .OnClickListener() {
                     @Override public void onClick(
-                            android.content.DialogInterface d, int w) {
+                            DialogInterface d, int w) {
                         launchGame();
                     }
                 })
@@ -360,32 +369,32 @@ public class SetupActivity extends Activity {
         }
     }
 
-    private void requestPin(android.content.pm.ShortcutManager sm) {
+    private void requestPin(ShortcutManager sm) {
         try {
             Intent launch = new Intent(Intent.ACTION_MAIN);
             launch.setClass(this, BalatroActivity.class);
 
-            android.content.pm.ShortcutInfo.Builder b =
-                    new android.content.pm.ShortcutInfo.Builder(this, "balatro")
+            ShortcutInfo.Builder b =
+                    new ShortcutInfo.Builder(this, "balatro")
                             .setShortLabel("Balatro")
                             .setLongLabel("Balatro Dual Screen")
                             .setIntent(launch);
 
             File iconFile = IconExtractor.extracted(this);
             if (iconFile != null) {
-                android.graphics.Bitmap art =
-                        android.graphics.BitmapFactory.decodeFile(
+                Bitmap art =
+                        BitmapFactory.decodeFile(
                                 iconFile.getAbsolutePath());
                 if (art != null) {
                     int s = 432;
-                    android.graphics.Bitmap composed =
-                            android.graphics.Bitmap.createBitmap(s, s,
-                                    android.graphics.Bitmap.Config.ARGB_8888);
-                    android.graphics.Canvas c =
-                            new android.graphics.Canvas(composed);
+                    Bitmap composed =
+                            Bitmap.createBitmap(s, s,
+                                    Bitmap.Config.ARGB_8888);
+                    Canvas c =
+                            new Canvas(composed);
                     c.drawColor(0xFF120A08);   // dark backing, never visible
                     int inset = (int) (s * 0.14f);
-                    android.graphics.Rect dst = new android.graphics.Rect(
+                    Rect dst = new Rect(
                             inset, inset, s - inset, s - inset);
                     // NEAREST-NEIGHBOUR for small sources. The .exe's
                     // Balatro icon is 32 px pixel art (its bigger entries
@@ -394,11 +403,11 @@ public class SetupActivity extends Activity {
                     // as intentional. The .app's 1024 px art is filtered
                     // normally on the way down.
                     boolean pixelArt = art.getWidth() <= 64;
-                    android.graphics.Paint p = new android.graphics.Paint();
+                    Paint p = new Paint();
                     p.setFilterBitmap(!pixelArt);
                     p.setAntiAlias(!pixelArt);
                     c.drawBitmap(art, null, dst, p);
-                    b.setIcon(android.graphics.drawable.Icon
+                    b.setIcon(Icon
                             .createWithAdaptiveBitmap(composed));
                 }
             }

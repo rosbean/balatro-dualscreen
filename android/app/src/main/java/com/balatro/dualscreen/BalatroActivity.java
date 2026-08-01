@@ -18,19 +18,19 @@
 
 package com.balatro.dualscreen;
 
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Process;
 import android.util.Log;
-
 import androidx.annotation.Keep;
-
 import com.balatro.dualscreen.companion.CompanionDisplayManager;
 import com.balatro.dualscreen.companion.CompanionEventQueue;
 import com.balatro.dualscreen.companion.CompanionSnapshot;
-
+import java.io.File;
+import java.nio.ByteBuffer;
 import org.love2d.android.GameActivity;
-
 /**
  * The game activity, subclassed so this project has somewhere to own the
  * secondary display without editing love-android's own GameActivity.
@@ -140,7 +140,7 @@ public class BalatroActivity extends GameActivity {
         // once the activity is torn down is the standard SDL-app fix, and by
         // this point everything -- companion display included -- is already
         // shut down.
-        android.os.Process.killProcess(android.os.Process.myPid());
+        Process.killProcess(Process.myPid());
     }
 
     /** Single place that decides whether the companion display should be up. */
@@ -171,7 +171,7 @@ public class BalatroActivity extends GameActivity {
     protected void copyGameInsideArchive() {
         super.copyGameInsideArchive();
         if (gamePath == null || gamePath.length() == 0) {
-            java.io.File assembled = GameAssembler.assembled(this);
+            File assembled = GameAssembler.assembled(this);
             if (assembled != null) {
                 gamePath = assembled.getAbsolutePath();
                 storagePermissionUnnecessary = true;
@@ -207,7 +207,7 @@ public class BalatroActivity extends GameActivity {
     @Override
     public void setOrientationBis(int w, int h, boolean resizable, String hint) {
         Log.i(TAG, "orientation: SDL asked (hint=" + hint + "); forcing locked landscape");
-        setRequestedOrientation(android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
     }
 
     // ------------------------------------------------------------------
@@ -278,12 +278,12 @@ public class BalatroActivity extends GameActivity {
     // a blit can never read a half-written frame.
     // ------------------------------------------------------------------
 
-    private static java.nio.ByteBuffer sharedFrame;
+    private static ByteBuffer sharedFrame;
 
     /** LOVE thread. (Re)allocate the shared buffer; dsbridge caches it. */
     @Keep
-    public static java.nio.ByteBuffer acquireFrameBufferFromNative(int w, int h) {
-        java.nio.ByteBuffer buf = java.nio.ByteBuffer.allocateDirect(w * h * 4);
+    public static ByteBuffer acquireFrameBufferFromNative(int w, int h) {
+        ByteBuffer buf = ByteBuffer.allocateDirect(w * h * 4);
         sharedFrame = buf;
         Log.i(TAG, "shared frame buffer " + w + "x" + h
                 + " (" + (w * h * 4 / 1024) + " KiB, direct)");
@@ -294,7 +294,7 @@ public class BalatroActivity extends GameActivity {
     @Keep
     public static void frameReadyFromNative(final int w, final int h) {
         final BalatroActivity self = instance;
-        final java.nio.ByteBuffer buf = sharedFrame;
+        final ByteBuffer buf = sharedFrame;
         if (self == null || buf == null || w <= 0 || h <= 0) {
             return;
         }

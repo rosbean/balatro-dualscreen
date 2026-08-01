@@ -38,10 +38,12 @@ package com.balatro.dualscreen.companion;
 
 import android.content.Context;
 import android.hardware.display.DisplayManager;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
-
+import java.nio.ByteBuffer;
 /**
  * Owns the secondary-display Presentation: finds the display, shows and
  * dismisses the window, and follows hotplug and foreground changes.
@@ -147,8 +149,8 @@ public class CompanionDisplayManager implements DisplayManager.DisplayListener {
      */
     private static final long BACKGROUND_GRACE_MS = 400;
 
-    private final android.os.Handler mainHandler =
-            new android.os.Handler(android.os.Looper.getMainLooper());
+    private final Handler mainHandler =
+            new Handler(Looper.getMainLooper());
 
     private final Runnable applyBackground = new Runnable() {
         @Override
@@ -266,7 +268,7 @@ public class CompanionDisplayManager implements DisplayManager.DisplayListener {
     }
 
     /** Shared-buffer frame. The buffer object is the lock. */
-    public void updateFrame(java.nio.ByteBuffer buf, int w, int h) {
+    public void updateFrame(ByteBuffer buf, int w, int h) {
         if (presentation != null) {
             presentation.updateFrame(buf, w, h);
         }
