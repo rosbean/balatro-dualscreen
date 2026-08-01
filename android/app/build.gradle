@@ -10,7 +10,7 @@ android {
         applicationId project.properties["app.application_id"]
         versionCode project.properties["app.version_code"].toInteger()
         versionName project.properties["app.version_name"]
-        minSdk 16
+        minSdk 26
         compileSdk 34
         targetSdk 34
         
@@ -45,10 +45,27 @@ android {
             ICON:(balatroIcon.exists() ? "@mipmap/balatro_icon" : "@mipmap/ds_icon"),
         ]
     }
+    signingConfigs {
+        if (project.hasProperty('BALATRO_STORE_FILE')) {
+            release {
+                storeFile file(BALATRO_STORE_FILE)
+                storePassword BALATRO_STORE_PASSWORD
+                keyAlias BALATRO_KEY_ALIAS
+                keyPassword BALATRO_KEY_PASSWORD
+            }
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            // Release is what ships: debuggable=false, R8 enabled. Signing
+            // uses a proper release key when one is configured in
+            // ~/.gradle/gradle.properties, and otherwise falls back to the
+            // debug key so anyone can build an installable APK from source.
+            signingConfig signingConfigs.findByName('release') ?: signingConfigs.debug
         }
     }
     sourceSets {

@@ -18,3 +18,12 @@
 
 -keep class org.love2d.android.GameActivity { *; }
 -keep class org.libsdl.app.** { *; }
+
+# Native code resolves these by name through JNI, so R8 cannot see a caller.
+# @Keep covers the annotated methods; this covers the classes wholesale.
+-keep class com.balatro.dualscreen.BalatroActivity { *; }
+-keep class com.balatro.dualscreen.companion.** { *; }
+-keep class com.balatro.dualscreen.ThorLeds { *; }
+-keepclassmembers class * {
+    @androidx.annotation.Keep *;
+}

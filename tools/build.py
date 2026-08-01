@@ -57,10 +57,10 @@ ANDROID_DIR = os.path.join(ROOT, "android")
 # flavour too.
 ASSET_DEST = os.path.join(ANDROID_DIR, "app", "src", "embed", "assets", "game.love")
 
-GRADLE_TASK = ":app:assembleEmbedNoRecordDebug"
+GRADLE_TASK = ":app:assembleEmbedNoRecordRelease"
 APK_PATH = os.path.join(
     ANDROID_DIR, "app", "build", "outputs", "apk",
-    "embedNoRecord", "debug", "app-embed-noRecord-debug.apk",
+    "embedNoRecord", "release", "app-embed-noRecord-release.apk",
 )
 
 # Copied into the game verbatim, except for these - documentation for people
