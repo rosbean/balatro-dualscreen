@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- TRANSPARENT on purpose. The icon is two screens and nothing else, so as
+     a small shortcut badge (Android draws the app icon in the corner of a
+     pinned shortcut) it reads as a mark rather than a coloured blob. The
+     screens carry their own dark fill and cream outline, so they stay legible
+     on light and dark launchers alike.
+     Original artwork; regenerate with tools/make_release_icon.py. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@android:color/transparent" />
+</shape>

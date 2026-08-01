@@ -1,0 +1,73 @@
+# =====================================================================
+# Balatro game code and assets — NEVER COMMIT. Copyrighted; you supply
+# your own copy at build time. This block is rule #1 of the project and
+# is deliberately over-broad.
+# =====================================================================
+*.love
+*.jkr
+Balatro.exe
+Balatro.app/
+balatro-win/
+balatro-source/
+game_dump/
+
+# Contents of local-balatro/ are ignored, but its README is tracked so a
+# fresh clone still explains what belongs there.
+local-balatro/*
+!local-balatro/README.md
+
+# Where the Balatro payload lands at build time. The embed flavour reads
+# app/src/embed/assets/; app/src/main/assets/ is covered too in case anyone
+# follows the older instruction. The .gitkeep stays tracked because it
+# carries love-android's own build note.
+android/app/src/embed/assets/*
+!android/app/src/embed/assets/.gitkeep
+android/app/src/main/assets/
+
+# Generated at build time from your own copy of the game: the extracted icon
+# resources, and the overlay staged into the release APK's assets.
+android/app/src/generated/
+android/app/src/embed/assets/dualscreen/
+
+# Read-only third-party material, for local study only. Not part of this
+# project's source.
+reference/
+
+# NOTE on the "no .lua outside lua/dualscreen/" guard: android/ is a VENDORED
+# copy of love-android 11.5 and legitimately carries 131 .lua files — LuaJIT's
+# dynasm/jit tooling and LÖVE's own boot scripts (nogame.lua, auto.lua). None
+# of them are Balatro's. The guard is scoped to exclude android/ for that
+# reason; the payload paths above are what actually keep Balatro Lua out.
+
+# =====================================================================
+# Build output
+# =====================================================================
+build/
+*.apk
+*.keystore
+*.tmp
+__pycache__/
+
+android/build/
+android/app/build/
+android/.gradle/
+android/local.properties
+.cxx/
+
+# Windows/.NET debris that can ride along with an extracted .exe
+*.exe
+*.dll
+*.pdb
+*.ppdb
+
+# =====================================================================
+# Editor, OS and logs
+# =====================================================================
+.DS_Store
+.vscode/
+.idea/
+.claude/
+*.iml
+*.sln
+.temp_*
+logcat*.txt
