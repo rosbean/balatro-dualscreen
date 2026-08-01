@@ -52,6 +52,14 @@ android {
                 storePassword BALATRO_STORE_PASSWORD
                 keyAlias BALATRO_KEY_ALIAS
                 keyPassword BALATRO_KEY_PASSWORD
+
+                // v1 is for API < 24 and minSdk is 26, so it only adds bulk.
+                // v3 carries a rotation proof, which is the one thing that
+                // makes a signing key replaceable later without forcing every
+                // user to uninstall.
+                enableV1Signing false
+                enableV2Signing true
+                enableV3Signing true
             }
         }
     }

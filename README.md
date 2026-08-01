@@ -112,6 +112,11 @@ python3 tools/check_balatro_source.py /path/to/your/Balatro.app
 You need the Android SDK/NDK and a JDK; exact versions and rationale are in
 [`docs/android-build.md`](docs/android-build.md).
 
+No signing key is needed: without one the build falls back to Android's debug
+key and produces a perfectly installable APK. It just cannot install *over* a
+release from the Releases tab, because the signatures differ — uninstall the
+released version first, which clears its saves.
+
 ## How it works
 
 This is not a fork of Balatro. It is an Android app, a Lua overlay and a build

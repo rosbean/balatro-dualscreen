@@ -39,6 +39,24 @@ device that has only one, the game must behave exactly like vanilla.
 - Keep comments functional: explain why something non-obvious is the way it is,
   and cite vanilla `file:line` when the reason lives in the game's own code.
 
+## Signing
+
+Nothing needs configuring. With no signing key present the release build falls
+back to Android's debug key, which installs fine — it simply cannot upgrade an
+APK from the Releases tab, since those are signed with a different key.
+Uninstall first if you are replacing a released build.
+
+To sign with your own key, put these in `~/.gradle/gradle.properties` (never in
+the repository — `*.jks` and `gradle.properties` are gitignored for that
+reason):
+
+```
+BALATRO_STORE_FILE=/absolute/path/to/your.jks
+BALATRO_STORE_PASSWORD=...
+BALATRO_KEY_ALIAS=...
+BALATRO_KEY_PASSWORD=...
+```
+
 ## Reporting bugs
 
 Use the issue templates. Logs help enormously:
