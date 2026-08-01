@@ -101,5 +101,5 @@ So the project's lineage is narrower than it first appeared:
 Accurate description of this project: **a BanjoRecomp-derived Android dual-screen companion
 app, targeting Balatro, informed by research on the portrait mod.**
 
-`NOTICE` should credit the portrait mod as prior art and research input, and be explicit that
+`NOTICE.md` should credit the portrait mod as prior art and research input, and be explicit that
 no code was taken from it.

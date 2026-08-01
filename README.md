@@ -12,6 +12,15 @@ name — but that is the only hardware this has been tested on.
 
 ---
 
+|  |  |
+| :--: | :--: |
+| ![Playing a hand](screenshots/hand.png) | ![The shop](screenshots/shop.png) |
+| Your hand and its controls on the lower screen, the table and jokers on top | The shop moves down too, so what you are buying is under your thumbs |
+| ![Opening a booster pack](screenshots/buffoon-pack.png) | ![The main menu](screenshots/menu.png) |
+| Booster packs take over the panel, with the pack animation on both screens | Menus are laid out for the lower screen rather than letterboxed |
+
+---
+
 ## What it does
 
 - **Hand on the lower screen** — cards, Play / Sort / Discard, all touch-driven.
@@ -147,7 +156,7 @@ This project stands on work others did first:
   Android, and where the layout logic lives. Read as reference only: it carries
   no licence grant, so **no code from it is used here**.
 
-[`NOTICE`](NOTICE) records exactly what came from where.
+[`NOTICE.md`](NOTICE.md) records exactly what came from where.
 
 ### Built with AI assistance
 

@@ -125,4 +125,4 @@ game's real artwork in `GameIcon.icns`, while the `.exe` carries it only at
 ## Licensing
 
 **GPL-3.0**, because it derives from BanjoRecomp (GPL-3.0). See `COPYING` and
-`NOTICE`.
+`NOTICE.md`.
