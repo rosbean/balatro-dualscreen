@@ -79,6 +79,7 @@ public class BalatroActivity extends GameActivity {
         super.onCreate(savedInstanceState);
 
         instance = this;
+        ensureExternalSaveDir();
         companion = new CompanionDisplayManager(this);
         // Debug: exercise the single-screen null path on a device whose second
         // panel cannot be detached. See CompanionDisplayManager.
@@ -88,6 +89,39 @@ public class BalatroActivity extends GameActivity {
             companion.setForceNoSecondaryDisplay(true);
         }
         companion.start();
+    }
+
+    /**
+     * Create the external save directory before the engine starts.
+     *
+     * Balatro's conf sets externalstorage = true, so LOVE saves to
+     * getExternalFilesDir()/save/<identity>. It creates that with a plain
+     * non-recursive ::mkdir (love/src/common/android.cpp), and nothing ever
+     * creates the "save" parent: createStorageDirectories() only makes the
+     * INTERNAL one. On a fresh install the parent is therefore missing, the
+     * mkdir fails with ENOENT, and the game runs but cannot save:
+     *
+     *   Error: Could not create save directory
+     *   /storage/emulated/0/Android/data/<pkg>/files/save/balatro-game!
+     *
+     * Existing installs hid this because the directory survived from an
+     * earlier build; only a clean install exposes it. Creating it here, as
+     * the app rather than as root or shell, also gets the ownership right.
+     */
+    private void ensureExternalSaveDir() {
+        try {
+            java.io.File ext = getExternalFilesDir(null);
+            if (ext == null) {
+                Log.w(TAG, "no external files dir; saves may not persist");
+                return;
+            }
+            File save = new File(ext, "save");
+            if (!save.isDirectory() && !save.mkdirs()) {
+                Log.w(TAG, "could not create save dir " + save);
+            }
+        } catch (Exception e) {
+            Log.w(TAG, "save dir setup failed", e);
+        }
     }
 
     @Override
