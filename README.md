@@ -4,11 +4,6 @@ Play [Balatro](https://www.playbalatro.com/) across **both screens** of a
 dual-screen Android handheld. Your hand, the Play/Sort/Discard buttons and the
 shop live on the lower touchscreen; the table, jokers and score stay on top.
 
-The lower screen is not a remote control or a redrawn mock-up. It is Balatro
-rendering Balatro: real card sprites with their enhancements, editions and
-seals, the same animated background as the top screen, drag-to-reorder,
-hold-to-inspect tooltips, and full controller support.
-
 Built and tested on the **AYN Thor**. Nothing in the code is tied to that
 device — the second screen is found through Android's display API, not by model
 name — but that is the only hardware this has been tested on.
